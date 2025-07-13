@@ -17,6 +17,13 @@ export const AvatarControls: React.FC = () => {
     stopVoiceChat,
   } = useVoiceChat();
   const { interrupt } = useInterrupt();
+  const handleToggle = (value: string) => {
+    if (value === "voice" && !isVoiceChatActive && !isVoiceChatLoading) {
+      startVoiceChat();
+    } else if (value === "text" && isVoiceChatActive && !isVoiceChatLoading) {
+      stopVoiceChat();
+    }
+  };
 
   return (
     <div className="w-full flex flex-col gap-4 lg:gap-7 relative items-center">
@@ -27,17 +34,7 @@ export const AvatarControls: React.FC = () => {
         disabled={isVoiceChatLoading}
         type="single"
         value={isVoiceChatActive || isVoiceChatLoading ? "voice" : "text"}
-        onValueChange={(value) => {
-          if (value === "voice" && !isVoiceChatActive && !isVoiceChatLoading) {
-            startVoiceChat();
-          } else if (
-            value === "text" &&
-            isVoiceChatActive &&
-            !isVoiceChatLoading
-          ) {
-            stopVoiceChat();
-          }
-        }}
+        onValueChange={handleToggle}
       >
         <ToggleGroupItem
           className="data-[state=on]:bg-indigo-600 data-[state=on]:text-white rounded-lg px-4 py-2 text-sm w-[120px] text-center text-gray-700 hover:bg-indigo-100 transition-all duration-300 ease-in-out mr-1"

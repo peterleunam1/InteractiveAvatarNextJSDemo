@@ -4,7 +4,6 @@ import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { BurguerIcon, GithubIcon, HeyGenLogo } from "./Icons";
 
-// 👇 Navegación común (para ambos menús)
 const navItems = [
   { label: "Avatars", href: "https://labs.heygen.com/interactive-avatar" },
   { label: "Voices", href: "https://docs.heygen.com/reference/list-voices-v2" },
@@ -12,7 +11,6 @@ const navItems = [
   { label: "Guide", href: "https://help.heygen.com/en/articles/9182113-interactive-avatar-101-your-ultimate-guide" },
 ];
 
-// 👇 Opción especial con ícono
 const githubItem = {
   label: "SDK",
   href: "https://github.com/HeyGen-Official/StreamingAvatarSDK",
@@ -38,7 +36,7 @@ export default function NavBar() {
   }, [open]);
 
   return (
-    <header className="relative z-50 bg-white shadow">
+    <header className="relative z-50 bg-white shadow-sm">
       <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
         {/* Logo + título */}
         <Link
@@ -61,6 +59,8 @@ export default function NavBar() {
         <div className="md:hidden relative" ref={menuRef}>
           <button
             aria-label="Toggle menu"
+            aria-expanded={open}
+            aria-controls="mobile-menu"
             onClick={() => setOpen(!open)}
             className="flex flex-col gap-[5px] p-2"
           >
@@ -68,7 +68,10 @@ export default function NavBar() {
           </button>
 
           {open && (
-            <div className="absolute right-0 mt-2 w-48 bg-neutral-900 border border-neutral-800 rounded-lg shadow-lg py-2 text-sm font-medium">
+            <div
+              id="mobile-menu"
+              className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-xl py-2 text-sm font-medium transition-all animate-fade-in"
+            >
               <MobileLinks onClick={() => setOpen(false)} />
             </div>
           )}
@@ -79,7 +82,8 @@ export default function NavBar() {
 }
 
 function NavLinks() {
-  const linkClass = "hover:text-indigo-400 transition-colors duration-200";
+  const linkClass =
+    "hover:text-indigo-500 transition-colors duration-200 ease-in-out";
   const target = "_blank";
 
   return (
@@ -92,7 +96,7 @@ function NavLinks() {
       <Link
         href={githubItem.href}
         target={target}
-        className="flex items-center gap-1 hover:text-indigo-400"
+        className="flex items-center gap-1 hover:text-indigo-500 transition-colors duration-200"
       >
         {githubItem.icon}
         {githubItem.label}
@@ -103,7 +107,7 @@ function NavLinks() {
 
 function MobileLinks({ onClick }: { onClick: () => void }) {
   const itemClass =
-    "block px-4 py-2 hover:bg-neutral-800 transition-colors duration-150";
+    "block px-4 py-2 hover:bg-gray-100 text-gray-700 transition-colors duration-150";
 
   return (
     <>
