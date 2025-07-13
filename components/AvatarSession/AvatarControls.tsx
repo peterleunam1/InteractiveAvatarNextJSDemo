@@ -20,8 +20,10 @@ export const AvatarControls: React.FC = () => {
 
   return (
     <div className="w-full flex flex-col gap-4 lg:gap-7 relative items-center">
-        <ToggleGroup
-        className={`${isVoiceChatLoading && "opacity-50" }`}
+      <ToggleGroup
+        className={`inline-flex rounded-xl bg-gray-100 shadow-inner p-1 transition-opacity duration-300 ${
+          isVoiceChatLoading ? "opacity-50" : ""
+        }`}
         disabled={isVoiceChatLoading}
         type="single"
         value={isVoiceChatActive || isVoiceChatLoading ? "voice" : "text"}
@@ -38,24 +40,32 @@ export const AvatarControls: React.FC = () => {
         }}
       >
         <ToggleGroupItem
-          className="data-[state=on]:bg-zinc-800 rounded-lg p-2 text-sm w-[90px] text-center hover:!bg-zinc-600 transition ease duration-300 mr-4"
+          className="data-[state=on]:bg-indigo-600 data-[state=on]:text-white rounded-lg px-4 py-2 text-sm w-[120px] text-center text-gray-700 hover:bg-indigo-100 transition-all duration-300 ease-in-out mr-1"
           value="voice"
         >
           Voice Chat
         </ToggleGroupItem>
         <ToggleGroupItem
-          className="data-[state=on]:bg-zinc-800 rounded-lg p-2 text-sm w-[90px] text-center hover:!bg-zinc-600 transition ease duration-300"
+          className="data-[state=on]:bg-indigo-600 data-[state=on]:text-white rounded-lg px-4 py-2 text-sm w-[120px] text-center text-gray-700 hover:bg-indigo-100 transition-all duration-300 ease-in-out"
           value="text"
         >
           Text Chat
         </ToggleGroupItem>
       </ToggleGroup>
-      {/* </Card> */}
-      <Card className="w-full lg:!p-3 flex items-center gap-3">
-        {isVoiceChatActive || isVoiceChatLoading ? <AudioInput /> : <TextInput />}
+
+      <Card className="w-full lg:!p-3 flex !justify-center items-center gap-3 mx-auto">
+        {isVoiceChatActive || isVoiceChatLoading ? (
+          <AudioInput />
+        ) : (
+          <TextInput />
+        )}
       </Card>
+
       <div className="absolute top-[-70px] right-3">
-        <Button className="!bg-[#3f3f46] hover:!bg-zinc-600 !text-white" onClick={interrupt}>
+        <Button
+          className="!bg-gray-200 hover:!bg-gray-300 !text-gray-800 border border-gray-300 shadow-sm"
+          onClick={interrupt}
+        >
           Interrupt
         </Button>
       </div>

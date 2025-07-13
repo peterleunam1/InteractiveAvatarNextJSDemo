@@ -1,3 +1,5 @@
+const { text } = require('stream/consumers');
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -9,6 +11,11 @@ module.exports = {
       fontFamily: {
         sans: ["var(--font-sans)"],
         mono: ["var(--font-geist-mono)"],
+      },
+      colors: {
+        primary: '#7559FF',
+        primaryHover: '#5e43d8',
+        textColor: '#1F2937',
       },
     },
   },

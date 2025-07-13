@@ -108,7 +108,7 @@ function InteractiveAvatar() {
       {/* <section className="rounded-2xl overflow-hidden border border-neutral-800 bg-neutral-900 shadow-md transition-all"> */}
       {/* Video o configuración */}
       <div className={wrapperClassName}>
-        <div className="relative w-full aspect-video bg-black flex items-center justify-center">
+        <div className="relative w-full aspect-video flex items-center justify-center">
           {sessionState !== StreamingAvatarSessionState.INACTIVE ? (
             <AvatarVideo ref={mediaStream} />
           ) : (

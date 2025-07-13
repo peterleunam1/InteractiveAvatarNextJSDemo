@@ -19,7 +19,7 @@ export const AudioInput: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="mx-auto">
       <Button
         className={`!p-2 relative`}
         disabled={isVoiceChatLoading}

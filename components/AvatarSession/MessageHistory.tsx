@@ -1,5 +1,4 @@
 import React, { useEffect, useRef } from "react";
-
 import { useMessageHistory, MessageSender } from "../logic";
 
 export const MessageHistory: React.FC = () => {
@@ -17,7 +16,7 @@ export const MessageHistory: React.FC = () => {
   return (
     <article
       ref={containerRef}
-      className="w-full lg:w-[295px] overflow-y-auto flex flex-col gap-2 text-white self-center bg-neutral-900/60 border border-neutral-800 rounded-2xl p-6 shadow-md hover:shadow-indigo-500/10 transition-shadow duration-300 lg:h-[550px] mb-8"
+      className="w-full lg:w-[295px] overflow-y-auto flex flex-col gap-2 text-gray-800 self-center bg-white border border-gray-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow duration-300 lg:h-[555px] mb-8"
     >
       {messages.length > 0 ? (
         messages.map((message) => (
@@ -29,15 +28,15 @@ export const MessageHistory: React.FC = () => {
                 : "self-start items-start"
             }`}
           >
-            <p className="text-xs text-zinc-400">
+            <p className="text-xs text-gray-400">
               {message.sender === MessageSender.AVATAR ? "Avatar" : "You"}
             </p>
-            <p className="text-sm">{message.content}</p>
+            <p className="text-sm text-gray-800">{message.content}</p>
           </div>
         ))
       ) : (
         <span className="w-full lg:h-[550px] flex items-center justify-center">
-          <p>No Message History</p>
+          <p className="text-gray-500">No Message History</p>
         </span>
       )}
     </article>

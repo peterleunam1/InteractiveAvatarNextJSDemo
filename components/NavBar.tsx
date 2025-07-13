@@ -38,7 +38,7 @@ export default function NavBar() {
   }, [open]);
 
   return (
-    <header className="relative z-50 bg-neutral-950 text-white shadow">
+    <header className="relative z-50 bg-white shadow">
       <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
         {/* Logo + título */}
         <Link
