@@ -31,12 +31,18 @@ To start your 'session' with a Interactive Avatar, first click the 'start' butto
 
 If you want to see a different Avatar or try a different voice, you can close the session and enter the IDs and then 'start' the session again. Please see below for information on where to retrieve different Avatar and voice IDs that you can use.
 
-### Which Avatars can I use with this project?
+### Custom UI/UX Design Proposal
 
-By default, there are several Public Avatars that can be used in Interactive Avatar. (AKA Interactive Avatars.) You can find the Avatar IDs for these Public Avatars by navigating to [labs.heygen.com/interactive-avatar](https://labs.heygen.com/interactive-avatar) and clicking 'Select Avatar' and copying the avatar id.
+This demo has been visually enhanced with a UI redesign proposal that focuses on:
 
-You can create your own custom Interactive Avatars at labs.heygen.com/interactive-avatar by clicking 'create interactive avatar' on the top-left of the screen.
+- Accessibility  
+- Visual clarity  
+- Simplified interaction  
+- Responsive layout  
 
-### Where can I read more about enterprise-level usage of the Interactive Avatar API?
+### 🖼 Design Mockups
 
-Please read our Interactive Avatar 101 article for more information on pricing: https://help.heygen.com/en/articles/9182113-interactive-avatar-101-your-ultimate-guide
+Below are the design mockups for the proposal:
+
+![Home Redesign](./public/uno.png)  
+![Active Session Redesign](./public/dos.jpg)
