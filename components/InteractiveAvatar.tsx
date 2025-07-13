@@ -19,9 +19,9 @@ import { useStreamingAvatarSession } from "./logic/useStreamingAvatarSession";
 import { AvatarControls } from "./AvatarSession/AvatarControls";
 import { useVoiceChat } from "./logic/useVoiceChat";
 import { StreamingAvatarProvider, StreamingAvatarSessionState } from "./logic";
-import { LoadingIcon } from "./Icons";
 import { MessageHistory } from "./AvatarSession/MessageHistory";
 import { AVATARS } from "@/app/lib/constants";
+import FloatingError from "./AlertError";
 
 const DEFAULT_CONFIG: StartAvatarRequest = {
   quality: AvatarQuality.Low,
@@ -45,6 +45,7 @@ function InteractiveAvatar() {
   const { startVoiceChat } = useVoiceChat();
   const [config, setConfig] = useState<StartAvatarRequest>(DEFAULT_CONFIG);
   const mediaStream = useRef<HTMLVideoElement>(null);
+  const [showError, setShowError] = useState<boolean>(false);
 
   const fetchAccessToken = async () => {
     try {
@@ -76,6 +77,7 @@ function InteractiveAvatar() {
       if (isVoiceChat) await startVoiceChat();
     } catch (error) {
       console.error("Error starting avatar session:", error);
+      setShowError(true);
     }
   });
 
@@ -139,6 +141,11 @@ function InteractiveAvatar() {
       {sessionState === StreamingAvatarSessionState.CONNECTED && (
         <MessageHistory />
       )}
+      <FloatingError
+        message='Something went wrong, please try again.'
+        show={showError}
+        onClose={() => setShowError(false)}
+      />
     </main>
   );
 }
