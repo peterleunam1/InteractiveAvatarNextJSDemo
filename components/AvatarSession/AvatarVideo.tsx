@@ -4,7 +4,7 @@ import { ConnectionQuality } from "@heygen/streaming-avatar";
 import { useConnectionQuality } from "../logic/useConnectionQuality";
 import { useStreamingAvatarSession } from "../logic/useStreamingAvatarSession";
 import { StreamingAvatarSessionState } from "../logic";
-import { CloseIcon } from "../Icons";
+import { CloseIcon, LoadingIcon } from "../Icons";
 import { Button } from "../Button";
 
 export const AvatarVideo = forwardRef<HTMLVideoElement>(({}, ref) => {
@@ -36,13 +36,14 @@ export const AvatarVideo = forwardRef<HTMLVideoElement>(({}, ref) => {
           width: "100%",
           height: "100%",
           objectFit: "contain",
+          borderRadius: "14px",
         }}
       >
         <track kind="captions" />
       </video>
       {!isLoaded && (
         <div className="w-full h-full flex items-center justify-center absolute top-0 left-0">
-          Loading...
+          <LoadingIcon />
         </div>
       )}
     </>

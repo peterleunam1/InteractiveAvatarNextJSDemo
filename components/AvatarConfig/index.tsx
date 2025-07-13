@@ -1,4 +1,6 @@
-import React, { useMemo, useState } from "react";
+"use client";
+
+import React, { useMemo } from "react";
 import {
   AvatarQuality,
   ElevenLabsModel,
@@ -10,9 +12,8 @@ import {
 
 import { Input } from "../Input";
 import { Select } from "../Select";
-
 import { Field } from "./Field";
-
+import { Card } from "../Card";
 import { AVATARS, STT_LANGUAGE_LIST } from "@/app/lib/constants";
 
 interface AvatarConfigProps {
@@ -26,111 +27,94 @@ export const AvatarConfig: React.FC<AvatarConfigProps> = ({
 }) => {
   const onChange = <T extends keyof StartAvatarRequest>(
     key: T,
-    value: StartAvatarRequest[T],
+    value: StartAvatarRequest[T]
   ) => {
     onConfigChange({ ...config, [key]: value });
   };
-  const [showMore, setShowMore] = useState<boolean>(false);
 
   const selectedAvatar = useMemo(() => {
-    const avatar = AVATARS.find(
-      (avatar) => avatar.avatar_id === config.avatarName,
-    );
-
-    if (!avatar) {
-      return {
-        isCustom: true,
-        name: "Custom Avatar ID",
-        avatarId: null,
-      };
-    } else {
-      return {
-        isCustom: false,
-        name: avatar.name,
-        avatarId: avatar.avatar_id,
-      };
-    }
+    const avatar = AVATARS.find((a) => a.avatar_id === config.avatarName);
+    return avatar
+      ? { isCustom: false, name: avatar.name, avatarId: avatar.avatar_id }
+      : { isCustom: true, name: "Custom Avatar ID", avatarId: null };
   }, [config.avatarName]);
 
   return (
-    <div className="relative flex flex-col gap-4 w-[550px] py-8 max-h-full overflow-y-auto px-4">
-      <Field label="Custom Knowledge Base ID">
-        <Input
-          placeholder="Enter custom knowledge base ID"
-          value={config.knowledgeId}
-          onChange={(value) => onChange("knowledgeId", value)}
-        />
-      </Field>
-      <Field label="Avatar ID">
-        <Select
-          isSelected={(option) =>
-            typeof option === "string"
-              ? !!selectedAvatar?.isCustom
-              : option.avatar_id === selectedAvatar?.avatarId
-          }
-          options={[...AVATARS, "CUSTOM"]}
-          placeholder="Select Avatar"
-          renderOption={(option) => {
-            return typeof option === "string"
-              ? "Custom Avatar ID"
-              : option.name;
-          }}
-          value={
-            selectedAvatar?.isCustom ? "Custom Avatar ID" : selectedAvatar?.name
-          }
-          onSelect={(option) => {
-            if (typeof option === "string") {
-              onChange("avatarName", "");
-            } else {
-              onChange("avatarName", option.avatar_id);
-            }
-          }}
-        />
-      </Field>
-      {selectedAvatar?.isCustom && (
-        <Field label="Custom Avatar ID">
+    <div className="w-full max-w-4xl grid gap-6 md:grid-cols-2">
+      {/* AVATAR SETTINGS */}
+      <Card title="🧑 Avatar Settings">
+        <Field label="Custom Knowledge Base ID">
           <Input
-            placeholder="Enter custom avatar ID"
-            value={config.avatarName}
-            onChange={(value) => onChange("avatarName", value)}
+            placeholder="Enter custom knowledge base ID"
+            value={config.knowledgeId}
+            onChange={(value) => onChange("knowledgeId", value)}
           />
         </Field>
-      )}
-      <Field label="Language">
-        <Select
-          isSelected={(option) => option.value === config.language}
-          options={STT_LANGUAGE_LIST}
-          renderOption={(option) => option.label}
-          value={
-            STT_LANGUAGE_LIST.find((option) => option.value === config.language)
-              ?.label
-          }
-          onSelect={(option) => onChange("language", option.value)}
-        />
-      </Field>
-      <Field label="Avatar Quality">
-        <Select
-          isSelected={(option) => option === config.quality}
-          options={Object.values(AvatarQuality)}
-          renderOption={(option) => option}
-          value={config.quality}
-          onSelect={(option) => onChange("quality", option)}
-        />
-      </Field>
-      <Field label="Voice Chat Transport">
-        <Select
-          isSelected={(option) => option === config.voiceChatTransport}
-          options={Object.values(VoiceChatTransport)}
-          renderOption={(option) => option}
-          value={config.voiceChatTransport}
-          onSelect={(option) => onChange("voiceChatTransport", option)}
-        />
-      </Field>
-      {showMore && (
-        <>
-          <h1 className="text-zinc-100 w-full text-center mt-5">
-            Voice Settings
-          </h1>
+        <Field label="Avatar ID">
+          <Select
+            isSelected={(option) =>
+              typeof option === "string"
+                ? !!selectedAvatar.isCustom
+                : option.avatar_id === selectedAvatar.avatarId
+            }
+            options={[...AVATARS, "CUSTOM"]}
+            placeholder="Select Avatar"
+            renderOption={(option) =>
+              typeof option === "string" ? "Custom Avatar ID" : option.name
+            }
+            value={
+              selectedAvatar.isCustom
+                ? "Custom Avatar ID"
+                : selectedAvatar.name
+            }
+            onSelect={(option) => {
+              onChange("avatarName", typeof option === "string" ? "" : option.avatar_id);
+            }}
+          />
+        </Field>
+        {selectedAvatar.isCustom && (
+          <Field label="Custom Avatar ID">
+            <Input
+              placeholder="Enter custom avatar ID"
+              value={config.avatarName}
+              onChange={(value) => onChange("avatarName", value)}
+            />
+          </Field>
+        )}
+        <Field label="Language">
+          <Select
+            isSelected={(option) => option.value === config.language}
+            options={STT_LANGUAGE_LIST}
+            renderOption={(option) => option.label}
+            value={
+              STT_LANGUAGE_LIST.find((o) => o.value === config.language)?.label
+            }
+            onSelect={(option) => onChange("language", option.value)}
+          />
+        </Field>
+        <Field label="Avatar Quality">
+          <Select
+            isSelected={(option) => option === config.quality}
+            options={Object.values(AvatarQuality)}
+            renderOption={(option) => option}
+            value={config.quality}
+            onSelect={(option) => onChange("quality", option)}
+          />
+        </Field>
+        <Field label="Voice Chat Transport">
+          <Select
+            isSelected={(option) => option === config.voiceChatTransport}
+            options={Object.values(VoiceChatTransport)}
+            renderOption={(option) => option}
+            value={config.voiceChatTransport}
+            onSelect={(option) => onChange("voiceChatTransport", option)}
+          />
+        </Field>
+      </Card>
+
+      {/* VOICE & STT SETTINGS */}
+      <div className="flex flex-col gap-6">
+        <Card title="🔊 Voice Settings">
           <Field label="Custom Voice ID">
             <Input
               placeholder="Enter custom voice ID"
@@ -162,9 +146,9 @@ export const AvatarConfig: React.FC<AvatarConfigProps> = ({
               }
             />
           </Field>
-          <h1 className="text-zinc-100 w-full text-center mt-5">
-            STT Settings
-          </h1>
+        </Card>
+
+        <Card title="🧠 STT Settings">
           <Field label="Provider">
             <Select
               isSelected={(option) => option === config.sttSettings?.provider}
@@ -179,14 +163,8 @@ export const AvatarConfig: React.FC<AvatarConfigProps> = ({
               }
             />
           </Field>
-        </>
-      )}
-      <button
-        className="text-zinc-400 text-sm cursor-pointer w-full text-center bg-transparent"
-        onClick={() => setShowMore(!showMore)}
-      >
-        {showMore ? "Show less" : "Show more..."}
-      </button>
+        </Card>
+      </div>
     </div>
   );
 };

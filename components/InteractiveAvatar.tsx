@@ -1,3 +1,5 @@
+"use client";
+
 import {
   AvatarQuality,
   StreamingEvents,
@@ -19,7 +21,6 @@ import { useVoiceChat } from "./logic/useVoiceChat";
 import { StreamingAvatarProvider, StreamingAvatarSessionState } from "./logic";
 import { LoadingIcon } from "./Icons";
 import { MessageHistory } from "./AvatarSession/MessageHistory";
-
 import { AVATARS } from "@/app/lib/constants";
 
 const DEFAULT_CONFIG: StartAvatarRequest = {
@@ -42,117 +43,103 @@ function InteractiveAvatar() {
   const { initAvatar, startAvatar, stopAvatar, sessionState, stream } =
     useStreamingAvatarSession();
   const { startVoiceChat } = useVoiceChat();
-
   const [config, setConfig] = useState<StartAvatarRequest>(DEFAULT_CONFIG);
-
   const mediaStream = useRef<HTMLVideoElement>(null);
 
-  async function fetchAccessToken() {
+  const fetchAccessToken = async () => {
     try {
-      const response = await fetch("/api/get-access-token", {
-        method: "POST",
-      });
-      const token = await response.text();
-
-      console.log("Access Token:", token); // Log the token to verify
-
-      return token;
+      const response = await fetch("/api/get-access-token", { method: "POST" });
+      return await response.text();
     } catch (error) {
       console.error("Error fetching access token:", error);
       throw error;
     }
-  }
+  };
 
   const startSessionV2 = useMemoizedFn(async (isVoiceChat: boolean) => {
     try {
       const newToken = await fetchAccessToken();
       const avatar = initAvatar(newToken);
 
-      avatar.on(StreamingEvents.AVATAR_START_TALKING, (e) => {
-        console.log("Avatar started talking", e);
-      });
-      avatar.on(StreamingEvents.AVATAR_STOP_TALKING, (e) => {
-        console.log("Avatar stopped talking", e);
-      });
-      avatar.on(StreamingEvents.STREAM_DISCONNECTED, () => {
-        console.log("Stream disconnected");
-      });
-      avatar.on(StreamingEvents.STREAM_READY, (event) => {
-        console.log(">>>>> Stream ready:", event.detail);
-      });
-      avatar.on(StreamingEvents.USER_START, (event) => {
-        console.log(">>>>> User started talking:", event);
-      });
-      avatar.on(StreamingEvents.USER_STOP, (event) => {
-        console.log(">>>>> User stopped talking:", event);
-      });
-      avatar.on(StreamingEvents.USER_END_MESSAGE, (event) => {
-        console.log(">>>>> User end message:", event);
-      });
-      avatar.on(StreamingEvents.USER_TALKING_MESSAGE, (event) => {
-        console.log(">>>>> User talking message:", event);
-      });
-      avatar.on(StreamingEvents.AVATAR_TALKING_MESSAGE, (event) => {
-        console.log(">>>>> Avatar talking message:", event);
-      });
-      avatar.on(StreamingEvents.AVATAR_END_MESSAGE, (event) => {
-        console.log(">>>>> Avatar end message:", event);
-      });
+      avatar.on(StreamingEvents.AVATAR_START_TALKING, console.log);
+      avatar.on(StreamingEvents.AVATAR_STOP_TALKING, console.log);
+      avatar.on(StreamingEvents.STREAM_DISCONNECTED, console.log);
+      avatar.on(StreamingEvents.STREAM_READY, console.log);
+      avatar.on(StreamingEvents.USER_START, console.log);
+      avatar.on(StreamingEvents.USER_STOP, console.log);
+      avatar.on(StreamingEvents.USER_END_MESSAGE, console.log);
+      avatar.on(StreamingEvents.USER_TALKING_MESSAGE, console.log);
+      avatar.on(StreamingEvents.AVATAR_TALKING_MESSAGE, console.log);
+      avatar.on(StreamingEvents.AVATAR_END_MESSAGE, console.log);
 
       await startAvatar(config);
-
-      if (isVoiceChat) {
-        await startVoiceChat();
-      }
+      if (isVoiceChat) await startVoiceChat();
     } catch (error) {
       console.error("Error starting avatar session:", error);
     }
   });
 
-  useUnmount(() => {
-    stopAvatar();
-  });
+  useUnmount(stopAvatar);
 
   useEffect(() => {
     if (stream && mediaStream.current) {
       mediaStream.current.srcObject = stream;
       mediaStream.current.onloadedmetadata = () => {
-        mediaStream.current!.play();
+        mediaStream.current?.play();
       };
     }
-  }, [mediaStream, stream]);
+  }, [stream]);
+
+  const containerClassName: string = `w-full mx-auto flex flex-col gap-6 text-white p-6 lg:p-0 ${
+    sessionState === StreamingAvatarSessionState.CONNECTED
+      ? "lg:flex-row items-start my-14"
+      : "max-w-6xl"
+  }`;
+
+  const wrapperClassName: string = `flex flex-col ${
+    sessionState === StreamingAvatarSessionState.CONNECTED
+      ? "w-[75%] gap-7"
+      : "w-full"
+  }`;
 
   return (
-    <div className="w-full flex flex-col gap-4">
-      <div className="flex flex-col rounded-xl bg-zinc-900 overflow-hidden">
-        <div className="relative w-full aspect-video overflow-hidden flex flex-col items-center justify-center">
+    <main className={containerClassName}>
+      {/* Card principal */}
+      {/* <section className="rounded-2xl overflow-hidden border border-neutral-800 bg-neutral-900 shadow-md transition-all"> */}
+      {/* Video o configuración */}
+      <div className={wrapperClassName}>
+        <div className="relative w-full aspect-video bg-black flex items-center justify-center">
           {sessionState !== StreamingAvatarSessionState.INACTIVE ? (
             <AvatarVideo ref={mediaStream} />
           ) : (
             <AvatarConfig config={config} onConfigChange={setConfig} />
           )}
         </div>
-        <div className="flex flex-col gap-3 items-center justify-center p-4 border-t border-zinc-700 w-full">
+
+        {/* Controles */}
+        <div className={`flex flex-col md:flex-row items-center justify-end gap-4 w-full max-w-[945px] ${!sessionState !== StreamingAvatarSessionState.INACTIVE && 'pb-14 lg:pb-9'}`}>
           {sessionState === StreamingAvatarSessionState.CONNECTED ? (
             <AvatarControls />
-          ) : sessionState === StreamingAvatarSessionState.INACTIVE ? (
-            <div className="flex flex-row gap-4">
+          ) : sessionState === StreamingAvatarSessionState.INACTIVE && (
+            <>
               <Button onClick={() => startSessionV2(true)}>
                 Start Voice Chat
               </Button>
               <Button onClick={() => startSessionV2(false)}>
-                Start Text Chat
+              Start Text Chat
               </Button>
-            </div>
-          ) : (
-            <LoadingIcon />
-          )}
+            </>
+          )
+        }
         </div>
       </div>
+      {/* </section> */}
+
+      {/* Mensajes de chat */}
       {sessionState === StreamingAvatarSessionState.CONNECTED && (
         <MessageHistory />
       )}
-    </div>
+    </main>
   );
 }
 

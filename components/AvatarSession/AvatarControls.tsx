@@ -1,5 +1,4 @@
 import { ToggleGroup, ToggleGroupItem } from "@radix-ui/react-toggle-group";
-import React from "react";
 
 import { useVoiceChat } from "../logic/useVoiceChat";
 import { Button } from "../Button";
@@ -7,6 +6,8 @@ import { useInterrupt } from "../logic/useInterrupt";
 
 import { AudioInput } from "./AudioInput";
 import { TextInput } from "./TextInput";
+
+import { Card } from "../Card";
 
 export const AvatarControls: React.FC = () => {
   const {
@@ -18,9 +19,10 @@ export const AvatarControls: React.FC = () => {
   const { interrupt } = useInterrupt();
 
   return (
-    <div className="flex flex-col gap-3 relative w-full items-center">
-      <ToggleGroup
-        className={`bg-zinc-700 rounded-lg p-1 ${isVoiceChatLoading ? "opacity-50" : ""}`}
+    <div className="flex flex-col gap-7 relative w-full items-center">
+      {/* <Card className="w-full !p-3 flex justify-center"> */}
+        <ToggleGroup
+        className={`${isVoiceChatLoading && "opacity-50" }`}
         disabled={isVoiceChatLoading}
         type="single"
         value={isVoiceChatActive || isVoiceChatLoading ? "voice" : "text"}
@@ -49,9 +51,12 @@ export const AvatarControls: React.FC = () => {
           Text Chat
         </ToggleGroupItem>
       </ToggleGroup>
-      {isVoiceChatActive || isVoiceChatLoading ? <AudioInput /> : <TextInput />}
+      {/* </Card> */}
+      <Card className="w-full !p-3 flex flex-col items-center gap-3">
+        {isVoiceChatActive || isVoiceChatLoading ? <AudioInput /> : <TextInput />}
+      </Card>
       <div className="absolute top-[-70px] right-3">
-        <Button className="!bg-zinc-700 !text-white" onClick={interrupt}>
+        <Button className="!bg-zinc-800 !text-white" onClick={interrupt}>
           Interrupt
         </Button>
       </div>
