@@ -22,7 +22,7 @@ export function Select<T>(props: SelectProps<T>) {
       open={isOpen}
       onOpenChange={setIsOpen}
     >
-      <SelectPrimitive.Trigger className="w-full text-white text-sm bg-zinc-700 py-2 px-6 rounded-lg cursor-pointer flex items-center justify-between h-fit disabled:opacity-50 min-h-[36px]">
+      <SelectPrimitive.Trigger className="w-full text-white text-sm bg-zinc-700 py-2 px-3 rounded-lg cursor-pointer flex items-center justify-between h-fit disabled:opacity-50 min-h-[36px]">
         <div className={`${props.value ? "text-white" : "text-zinc-400"}`}>
           {props.value ? props.value : props.placeholder}
         </div>

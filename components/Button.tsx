@@ -6,9 +6,10 @@ export const Button: React.FC<
   return (
     <button
       className={`
-        bg-[#7559FF] 
-        text-white 
-        text-sm 
+        bg-primary 
+        text-white
+        text-xs 
+        lg:text-sm 
         px-6 
         py-2 
         rounded-lg 
@@ -18,7 +19,7 @@ export const Button: React.FC<
         transition-all 
         duration-200 
         ease-in-out 
-        hover:bg-[#5e43d8] 
+        hover:bg-primaryHover 
         active:scale-[0.98]
         ${className}
       `}

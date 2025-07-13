@@ -92,13 +92,13 @@ function InteractiveAvatar() {
 
   const containerClassName: string = `w-full mx-auto flex flex-col gap-6 text-white p-6 lg:p-0 ${
     sessionState === StreamingAvatarSessionState.CONNECTED
-      ? "lg:flex-row items-start my-14"
+      ? "lg:flex-row items-start lg:my-12"
       : "max-w-6xl"
   }`;
 
   const wrapperClassName: string = `flex flex-col ${
     sessionState === StreamingAvatarSessionState.CONNECTED
-      ? "w-[75%] gap-7"
+      ? "w-full lg:w-[75%] gap-4 lg:gap-7"
       : "w-full"
   }`;
 
@@ -117,7 +117,7 @@ function InteractiveAvatar() {
         </div>
 
         {/* Controles */}
-        <div className={`flex flex-col md:flex-row items-center justify-end gap-4 w-full max-w-[945px] ${!sessionState !== StreamingAvatarSessionState.INACTIVE && 'pb-14 lg:pb-9'}`}>
+        <div className={`flex items-center justify-end gap-4 w-full max-w-[945px] ${sessionState === StreamingAvatarSessionState.INACTIVE && 'lg:pb-9 mt-6 md:mt-0'}`}>
           {sessionState === StreamingAvatarSessionState.CONNECTED ? (
             <AvatarControls />
           ) : sessionState === StreamingAvatarSessionState.INACTIVE && (

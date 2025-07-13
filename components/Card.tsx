@@ -14,7 +14,7 @@ export const Card = ({ className, title, children, ...rest }: Props) => {
       {title && (
         <h2 className="text-lg font-semibold text-indigo-300 mb-4">{title}</h2>
       )}
-      <div className="flex flex-col gap-4">{children}</div>
+      <div className="flex flex-col gap-4 w-full">{children}</div>
     </section>
   );
 };

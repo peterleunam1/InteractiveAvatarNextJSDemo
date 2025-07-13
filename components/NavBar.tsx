@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import { GithubIcon, HeyGenLogo } from "./Icons";
+import { BurguerIcon, GithubIcon, HeyGenLogo } from "./Icons";
 
 // 👇 Navegación común (para ambos menús)
 const navItems = [
@@ -64,9 +64,7 @@ export default function NavBar() {
             onClick={() => setOpen(!open)}
             className="flex flex-col gap-[5px] p-2"
           >
-            {[1, 2, 3].map((i) => (
-              <span key={i} className="w-6 h-0.5 bg-white rounded-sm" />
-            ))}
+            <BurguerIcon />
           </button>
 
           {open && (

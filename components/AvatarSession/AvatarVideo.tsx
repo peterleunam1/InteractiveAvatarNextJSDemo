@@ -42,8 +42,9 @@ export const AvatarVideo = forwardRef<HTMLVideoElement>(({}, ref) => {
         <track kind="captions" />
       </video>
       {!isLoaded && (
-        <div className="w-full h-full flex items-center justify-center absolute top-0 left-0">
+        <div className="w-full h-full flex flex-col items-center justify-center absolute top-0 left-0">
           <LoadingIcon />
+          <p className="ml-2">Loading</p>
         </div>
       )}
     </>
